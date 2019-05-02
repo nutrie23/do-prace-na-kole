@@ -50,17 +50,20 @@ function get_placeholder_events(fetchInfo, successCallback, failureCallback){
        }
        for(i in typical_directions) {
            if(directions.indexOf(typical_directions[i]) == -1){
+               working_ride = day_types["non-working-day"].indexOf(active_day) == -1;
                new_event =  {
-                   title: "+",
+                   title: '',
                    start: active_day,
                    end: add_days(new Date(active_day), 1),
                    order: i,
                    allDay: true,
                    placeholder: true,
                    direction: typical_directions[i],
+                   working_ride: working_ride,
                    classNames: [
                        'cal_event_'+typical_directions[i],
                        "active-trip-unfilled",
+                       "active-trip-unfilled-" + (working_ride ? "working" : "vacation"),
                    ],
                }
                placeholder_events.push(new_event);
@@ -244,6 +247,13 @@ function eventRender(info) {
     }
     if (exp.placeholder) {
         show_tooltip(info.el, decode_description_string(commute_modes[get_selected_commute_mode()].add_command, exp.direction))
+        if(exp.working_ride){
+           right_icon = document.createElement("i");
+           right_icon.className='fa fa-subway xs';
+        } else {
+           right_icon = document.createElement("i");
+           right_icon.className='fa fa-umbrella-beach xs';
+        };
     } else if (exp.direction == 'trip_to'){
         show_tooltip(info.el, " {% trans 'Do práce' %} " + info.event.title)
     } else if (exp.direction == 'trip_from') {
