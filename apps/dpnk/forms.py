@@ -342,7 +342,7 @@ class ChangeTeamForm(PrevNextMixin, forms.ModelForm):
 
         self.fields["team"].widget.manager = 'team_in_campaign_%s' % self.instance.campaign.slug
         self.fields["subsidiary"].help_text += format_html(
-            "{}<br/><br/>{}<br/>{}",
+            "<p>{}</p><p>{} {}</p>",
             _("Zadejte adresu, kam jezdíte každý den do práce."),
             _("Je název nebo adresa společnosti napsaná chybně?"),
             self.instance.company_coordinator_mail_text(),
